@@ -14,18 +14,20 @@ import zipfile
 import gdown
 
 # Download and unzip model if not already present
-model_file = "my_model.keras"
-zip_file = "my_model.zip"
+import requests
+import os
 
-if not os.path.exists(model_file):
-    # Extract file ID from the link: https://drive.google.com/file/d/12aIPsfp8GlSE7jDNd_RUbuUlKWA8a9ds/view?usp=drive_link
-    file_id = "12aIPsfp8GlSE7jDNd_RUbuUlKWA8a9ds"
-    url = f"https://drive.google.com/uc?id={file_id}"
-    gdown.download(url, zip_file, quiet=False)
+import tensorflow as tf
+import requests
+import os
 
-    # Unzip the file
-    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
-        zip_ref.extractall()
+import os
+os.environ["KERAS_BACKEND"] = "jax"
+	
+import keras
+
+model = keras.saving.load_model("hf://Savinup21/capstone")
+
 
 def get_grad_cam(model, image, layer_name):
     grad_model = tf.keras.models.Model(
