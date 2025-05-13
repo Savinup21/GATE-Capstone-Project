@@ -9,7 +9,23 @@ import matplotlib.pyplot as plt
 
 IMG_SIZE = (224, 224)  
 CLASS_LABELS = ['Fracture Detected', 'No Fracture was Detected']
-MODEL_PATH = 'my_model1.keras'
+import os
+import zipfile
+import gdown
+
+# Download and unzip model if not already present
+model_file = "my_model.keras"
+zip_file = "my_model.zip"
+
+if not os.path.exists(model_file):
+    # Extract file ID from the link: https://drive.google.com/file/d/12aIPsfp8GlSE7jDNd_RUbuUlKWA8a9ds/view?usp=drive_link
+    file_id = "12aIPsfp8GlSE7jDNd_RUbuUlKWA8a9ds"
+    url = f"https://drive.google.com/uc?id={file_id}"
+    gdown.download(url, zip_file, quiet=False)
+
+    # Unzip the file
+    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+        zip_ref.extractall()
 
 def get_grad_cam(model, image, layer_name):
     grad_model = tf.keras.models.Model(
