@@ -18,15 +18,16 @@ import requests
 import os
 
 import tensorflow as tf
-import requests
-import os
 
-import os
-os.environ["KERAS_BACKEND"] = "jax"
-	
-import keras
 
-model = keras.saving.load_model("hf://Savinup21/capstone")
+model_url = "https://huggingface.co/Savinup21/capstone/resolve/main/my_model1.keras"
+model_path = "my_model1.keras"
+
+if not os.path.exists(model_path):
+    with open(model_path, "wb") as f:
+        f.write(requests.get(model_url).content)
+
+model = tf.keras.models.load_model(model_path)
 
 
 def get_grad_cam(model, image, layer_name):
