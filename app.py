@@ -8,7 +8,7 @@ st.set_page_config(page_title="MRI Fracture Detection", layout="centered")
 
 # Constants
 IMG_SIZE = (224, 224)
-CLASS_LABELS = ['Fracture Detected', 'No Fracture was Detected']
+CLASS_LABELS = ['No Fracture Detected', 'Fracture was Detected']
 MODEL_PATH = "my_model1.tflite"  # Local TFLite model path
 
 @st.cache_resource
