@@ -40,9 +40,20 @@ if uploaded_file is not None:
 
     output = predict_tflite(image_array_expanded)
     predicted_class_index = int(np.argmax(output))
-    confidence = float(np.max(output)) * 100
 
-    st.success(f"**Prediction:** {CLASS_LABELS[predicted_class_index]} ({confidence:.2f}% confidence)")
+    st.success(f"**Prediction:** {CLASS_LABELS[predicted_class_index]}")
     st.image(pil_image, caption="Uploaded MRI Image", use_container_width=True)
 else:
     st.info("Please upload an MRI image to begin.")
+
+
+st.markdown(
+    """
+    <hr style="margin-top: 2em;">
+    <p style="font-size: 0.9em; color: gray; text-align: center;">
+        ⚠️ This tool is for educational purposes only. Predictions may be inaccurate and should not be used for medical diagnosis.
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
