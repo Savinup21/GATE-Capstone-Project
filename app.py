@@ -4,10 +4,12 @@ import numpy as np
 from PIL import Image
 import cv2
 
+st.set_page_config(page_title="MRI Fracture Detection", layout="centered")
+
 # Constants
 IMG_SIZE = (224, 224)
 CLASS_LABELS = ['Fracture Detected', 'No Fracture was Detected']
-MODEL_PATH = "my_model1.tflite"  # Local path in the GitHub repo
+MODEL_PATH = "my_model1.tflite"  # Local TFLite model path
 
 @st.cache_resource
 def load_tflite_model():
@@ -25,8 +27,7 @@ def predict_tflite(image_array):
     interpreter.invoke()
     return interpreter.get_tensor(output_details[0]['index'])
 
-# Streamlit UI
-st.set_page_config(page_title="MRI Fracture Detection", layout="centered")
+# UI
 st.title("MRI Bone Fracture Detection with AI")
 
 uploaded_file = st.file_uploader("Upload MRI Image", type=['jpg', 'jpeg', 'png'])
