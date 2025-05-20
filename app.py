@@ -43,7 +43,5 @@ if uploaded_file is not None:
 
     st.success(f"**Prediction:** {CLASS_LABELS[predicted_class_index]} ({confidence:.2f}% confidence)")
     st.image(pil_image, caption="Uploaded MRI Image", use_container_width=True)
-
-    st.warning("⚠️ Grad-CAM is not available for TFLite models.")
 else:
     st.info("Please upload an MRI image to begin.")
