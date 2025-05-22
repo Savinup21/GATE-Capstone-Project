@@ -52,6 +52,30 @@ st.markdown(
     <hr style="margin-top: 2em;">
     <p style="font-size: 0.9em; color: gray; text-align: center;">
         ⚠️ This tool is for educational purposes only. Predictions may be inaccurate and should not be used for medical diagnosis.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Made by Savinu Perera
     </p>
     """,
     unsafe_allow_html=True
