@@ -4,7 +4,7 @@ import numpy as np
 from PIL import Image
 import cv2
 
-st.set_page_config(page_title="MRI Fracture Detection", layout="centered")
+st.set_page_config(page_title="X Ray Fracture Detection", layout="centered")
 
 # Constants
 IMG_SIZE = (224, 224)
@@ -28,9 +28,9 @@ def predict_tflite(image_array):
     return interpreter.get_tensor(output_details[0]['index'])
 
 # UI
-st.title("MRI Bone Fracture Detection with AI")
+st.title("X Ray Bone Fracture Detection with AI")
 
-uploaded_file = st.file_uploader("Upload MRI Image", type=['jpg', 'jpeg', 'png'])
+uploaded_file = st.file_uploader("Upload X ray Image", type=['jpg', 'jpeg', 'png'])
 
 if uploaded_file is not None:
     pil_image = Image.open(uploaded_file).convert('RGB')
@@ -42,9 +42,9 @@ if uploaded_file is not None:
     predicted_class_index = int(np.argmax(output))
 
     st.success(f"**Prediction:** {CLASS_LABELS[predicted_class_index]}")
-    st.image(pil_image, caption="Uploaded MRI Image", use_container_width=True)
+    st.image(pil_image, caption="Uploaded X ray Image", use_container_width=True)
 else:
-    st.info("Please upload an MRI image to begin.")
+    st.info("Please upload an X ray image to begin.")
 
 
 st.markdown(
