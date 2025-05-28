@@ -3,37 +3,27 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import os
-import requests
 
-st.set_page_config(page_title="X-Ray Fracture Detection", layout="centered")
+st.set_page_config(page_title="X Ray Fracture Detection", layout="centered")
 
 IMG_SIZE = (224, 224)
 CLASS_LABELS = ['No Fracture Detected', 'Fracture was Detected']
-
-MODEL_PATH = "my_model1.tflite"
-
-def download_model():
-    if not os.path.exists(MODEL_PATH):
-        with requests.get(MODEL_URL, stream=True) as r:
-            r.raise_for_status()
-            with open(MODEL_PATH, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    f.write(chunk)
+MODEL_PATH = "mymodel1.tflite"
 
 @st.cache_resource
 def load_tflite_model():
-    download_model()
     interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
     interpreter.allocate_tensors()
     return interpreter
 
-def predict_tflite(interpreter, image):
+def predict_with_tflite(interpreter, image_array):
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
-    interpreter.set_tensor(input_details[0]['index'], image)
+    
+    interpreter.set_tensor(input_details[0]['index'], image_array.astype(np.float32))
     interpreter.invoke()
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-    return output_data
+    output = interpreter.get_tensor(output_details[0]['index'])
+    return output
 
 interpreter = load_tflite_model()
 
@@ -45,8 +35,9 @@ if uploaded_file:
     pil_image = Image.open(uploaded_file).convert('RGB')
     image_resized = pil_image.resize(IMG_SIZE)
     image_array = np.array(image_resized) / 255.0
-    image_array_expanded = np.expand_dims(image_array, axis=0).astype(np.float32)
-    output = predict_tflite(interpreter, image_array_expanded)
+    image_array_expanded = np.expand_dims(image_array, axis=0)
+    
+    output = predict_with_tflite(interpreter, image_array_expanded)
     predicted_class_index = int(np.argmax(output))
 
     st.success(f"**Prediction:** {CLASS_LABELS[predicted_class_index]}")
@@ -64,4 +55,3 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
