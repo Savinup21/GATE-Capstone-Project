@@ -10,8 +10,7 @@ st.set_page_config(page_title="X-Ray Fracture Detection", layout="centered")
 IMG_SIZE = (224, 224)
 CLASS_LABELS = ['No Fracture Detected', 'Fracture was Detected']
 
-MODEL_PATH = "mymodel1.tflite"
-MODEL_URL = "https://raw.githubusercontent.com/Savinup21/GATE-Capstone-Project/main/mymodel1.tflite"
+MODEL_PATH = "my_model1.tflite"
 
 def download_model():
     if not os.path.exists(MODEL_PATH):
