@@ -19,8 +19,14 @@ def load_tflite_model():
 def predict_with_tflite(interpreter, image_array):
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
+
+    input_index = input_details[0]['index']
+    expected_dtype = input_details[0]['dtype']
+
+    # Resize image and cast to correct dtype
+    image_array = image_array.astype(expected_dtype)
     
-    interpreter.set_tensor(input_details[0]['index'], image_array.astype(np.float32))
+    interpreter.set_tensor(input_index, image_array)
     interpreter.invoke()
     output = interpreter.get_tensor(output_details[0]['index'])
     return output
@@ -34,8 +40,8 @@ uploaded_file = st.file_uploader("Upload an X-ray Image", type=['jpg', 'jpeg', '
 if uploaded_file:
     pil_image = Image.open(uploaded_file).convert('RGB')
     image_resized = pil_image.resize(IMG_SIZE)
-    image_array = np.array(image_resized) / 255.0
-    image_array_expanded = np.expand_dims(image_array, axis=0)
+    image_array = np.array(image_resized).astype(np.float32) / 255.0
+    image_array_expanded = np.expand_dims(image_array, axis=0)  # Shape: (1, 224, 224, 3)
     
     output = predict_with_tflite(interpreter, image_array_expanded)
     predicted_class_index = int(np.argmax(output))
