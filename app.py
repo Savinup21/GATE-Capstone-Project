@@ -7,7 +7,7 @@ import os
 st.set_page_config(page_title="X-Ray Fracture Detection", layout="centered")
 
 IMG_SIZE = (224, 224)
-CLASS_LABELS = ['No Fracture Detected', 'Fracture was Detected']
+CLASS_LABELS = ['Fracture was Detected', 'No Fracture Detected']
 MODEL_PATH = "my_model1.tflite"
 
 @st.cache_resource
